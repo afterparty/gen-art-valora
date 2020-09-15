@@ -6,6 +6,12 @@ fn main() -> Result<()> {
             canvas.set_color(LinSrgb::new(1., 1., 1.));
             canvas.paint(Filled(ctx.world));
 
+            canvas.set_color(LinSrgb::new(1., 0., 1.));
+            canvas.paint(Stroked {
+                width: 2.,
+                element: Ngon::triangle(world.center(), 200.),
+            });
+
             let max_radius = world.width / 3.;
             let radius = ctx.time.as_secs_f32().cos().abs() * max_radius;
 
