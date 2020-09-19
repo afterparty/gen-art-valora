@@ -6,11 +6,17 @@ fn main() -> Result<()> {
             canvas.set_color(LinSrgb::new(1., 1., 1.));
             canvas.paint(Filled(ctx.world));
 
-            canvas.set_color(LinSrgb::new(1., 0., 1.));
-            canvas.paint(Stroked {
-                width: 2.,
-                element: Ngon::triangle(world.center(), 200.),
+            let triangle = Ngon::triangle(world.center(), 200.);
+            let repeated = std::iter::successors(Some(triangle), |t| {
+                Some(t.clone().scale(0.9))
             });
+
+            for triangle in repeated.take(15) {
+                canvas.paint(Stroked {
+                    width: 2.,
+                    element: triangle,
+                });
+            }
 
             let max_radius = world.width / 3.;
             let radius = ctx.time.as_secs_f32().cos().abs() * max_radius;
